@@ -136,19 +136,33 @@ def get_loss(w1,w2,model,X,y,set_weights):
     set_weights(model,w1,w2)
     return model.evaluate(X,y,verbose=0)[0]
 
-def plotBoundary(data, labels, clf_1, N,degree=False,include_bias=False):
+def plotBoundary(data, labels, clf_1, N = 300, degree=False, include_bias=False):
+    '''Dibuja plot boundary
+    
+    Args:
+        data (int): Explicar
+        labels (bool): Explicar
+        clf_1 ():
+        N ():
+        degree():
+        include_bias ():
+    '''
     class_1 = data[labels == 1]
     class_0 = data[labels == 0]
-    N = 300
+    
     mins = data[:,:2].min(axis=0)
     maxs = data[:,:2].max(axis=0)
+    
     x1 = np.linspace(mins[0], maxs[0], N)
     x2 = np.linspace(mins[1], maxs[1], N)
     x1, x2 = np.meshgrid(x1, x2)
+    
     X=np.c_[x1.flatten(), x2.flatten()]
+    
     if degree:
-        poly=PolynomialFeatures(degree,include_bias=include_bias)
-        X=poly.fit_transform(X)
+        poly = PolynomialFeatures(degree, include_bias=include_bias)
+        X = poly.fit_transform(X)
+    
     Z_nn = clf_1.predict_proba(X)[:, 0]
 
     # Put the result into a color plot
